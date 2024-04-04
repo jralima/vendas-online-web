@@ -22,7 +22,7 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = () => { };
+  const handleLogin = () => {};
 
   return (
     <ContainerLoginScreen>
