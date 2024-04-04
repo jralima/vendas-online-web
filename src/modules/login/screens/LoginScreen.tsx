@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 
 import Button from '../../../shared/buttons/button/Button';
@@ -22,7 +23,25 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+    await axios({
+      method: 'post',
+      url: 'http://localhost:8080/auth',
+      data: {
+        email: userName,
+        password: password,
+      },
+    })
+      .then((response) => {
+        alert('OK');
+        return response.data;
+      })
+      .catch(() => {
+        alert('Usuário ou senha inválidos');
+      });
+
+    // response.
+  };
 
   return (
     <ContainerLoginScreen>
