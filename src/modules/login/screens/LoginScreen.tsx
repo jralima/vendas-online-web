@@ -1,9 +1,10 @@
-import axios from 'axios';
 import { useState } from 'react';
 
-import Button from '../../../shared/buttons/button/Button';
-import SVGLogo from '../../../shared/icons/SVGLogo';
-import Input from '../../../shared/inputs/input/Input';
+import Button from '../../../shared/components/buttons/button/Button';
+import SVGLogo from '../../../shared/components/icons/SVGLogo';
+import Input from '../../../shared/components/input/Input';
+// import { useGlobalContext } from '../../../shared/hooks/useGlobalContext';
+import { userRequests } from '../../../shared/hooks/useRequests';
 import {
   BackgroundImage,
   ContainerLogin,
@@ -13,8 +14,11 @@ import {
 } from '../styles/loginScreen.styles';
 
 const LoginScreen = () => {
+  // const { accessToken, setAccessToken } = useGlobalContext();
+
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const { postRequest, loading } = userRequests();
 
   const handleUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
@@ -23,24 +27,11 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = async () => {
-    await axios({
-      method: 'post',
-      url: 'http://localhost:8080/auth',
-      data: {
-        email: userName,
-        password: password,
-      },
-    })
-      .then((response) => {
-        alert('OK');
-        return response.data;
-      })
-      .catch(() => {
-        alert('Usuário ou senha inválidos');
-      });
-
-    // response.
+  const handleLogin = () => {
+    postRequest('http://localhost:8080/auth', {
+      email: userName,
+      password: password,
+    });
   };
 
   return (
@@ -65,7 +56,7 @@ const LoginScreen = () => {
             value={password}
           />
 
-          <Button type="primary" margin="64px 0px 16px 0px" onClick={handleLogin}>
+          <Button loading={loading} type="primary" margin="64px 0px 16px 0px" onClick={handleLogin}>
             ENTRAR
           </Button>
         </LimitedContainer>
