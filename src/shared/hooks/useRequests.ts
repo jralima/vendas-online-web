@@ -19,14 +19,14 @@ export const userRequests = () => {
 
         return response.data;
       })
-      .catch(() => {
-        setNotification('Erro no login', 'error');
+      .catch((error: Error) => {
+        setNotification(error.message, 'error');
       });
   };
 
-  const postRequest = async (url: string, body: object) => {
+  const postRequest = async <T>(url: string, body: object): Promise<T | undefined> => {
     setLoading(true);
-    const response = await connectionAPIPost(url, body)
+    const response = await connectionAPIPost<T>(url, body)
       .then((response) => {
         setNotification('Login OK', 'success');
 
@@ -34,6 +34,7 @@ export const userRequests = () => {
       })
       .catch((error: Error) => {
         setNotification(error.message, 'error');
+        return undefined;
       });
     setLoading(false);
 
