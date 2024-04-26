@@ -3,8 +3,6 @@ import { useState } from 'react';
 import Button from '../../../shared/components/buttons/button/Button';
 import SVGLogo from '../../../shared/components/icons/SVGLogo';
 import Input from '../../../shared/components/input/Input';
-import { setAuthorizationToken } from '../../../shared/functions/connection/auth';
-// import { useGlobalContext } from '../../../shared/hooks/useGlobalContext';
 import { userRequests } from '../../../shared/hooks/useRequests';
 import {
   BackgroundImage,
@@ -16,8 +14,6 @@ import {
 import { UserType } from '../types/UserType';
 
 const LoginScreen = () => {
-  // const { setAccessToken } = useGlobalContext();
-
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const { postRequest, loading } = userRequests();
@@ -29,12 +25,11 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = async () => {
-    const user = await postRequest<UserType>('http://localhost:8080/auth', {
+  const handleLogin = () => {
+    postRequest<UserType>('http://localhost:8080/auth', {
       email: userName,
       password: password,
     });
-    setAuthorizationToken(user?.access_token || '');
   };
 
   return (
